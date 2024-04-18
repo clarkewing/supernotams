@@ -109,6 +109,20 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'aim_fns' => [
+            'driver'         => 'pgsql',
+            'url'            => env('FNS_DB_URL'),
+            'host'           => env('FNS_DB_HOST', '127.0.0.1'),
+            'port'           => env('FNS_DB_PORT', '5432'),
+            'database'       => env('FNS_DB_DATABASE', 'aim_fns'),
+            'username'       => env('FNS_DB_USERNAME', 'root'),
+            'password'       => env('FNS_DB_PASSWORD', ''),
+            'charset'        => env('FNS_DB_CHARSET', 'utf8'),
+            'prefix'         => '',
+            'prefix_indexes' => true,
+            'search_path'    => 'public',
+            'sslmode'        => 'prefer',
+        ],
     ],
 
     /*
