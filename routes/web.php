@@ -3,6 +3,7 @@
 use App\Http\Controllers\DatabaseDownloadController;
 use App\Http\Controllers\NotamController;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\NotamApp;
 use App\Livewire\Playground;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,8 @@ Route::get('/', [NotamController::class, 'index'])->name('notam.index');
 Route::post('/', [NotamController::class, 'store'])->name('notam.store');
 Route::get('/download/{cacheKey}', [NotamController::class, 'show'])->name('notam.show');
 Route::get('/db', [DatabaseDownloadController::class, 'index'])->name('database-download.index');
+
+Route::get('app', NotamApp::class)->name('app');
 
 Route::get('play/{session?}', Playground::class)->name('playground');
 

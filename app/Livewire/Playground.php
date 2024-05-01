@@ -5,11 +5,12 @@ namespace App\Livewire;
 use App\Livewire\Forms\PlaygroundForm;
 use App\Models\PlaygroundNotam;
 use App\Models\PlaygroundSession;
+use App\View\Components\AppLayout;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('layouts.app', ['title' => 'Playground'])]
+#[Layout(AppLayout::class, ['title' => 'Playground'])]
 class Playground extends Component
 {
     public PlaygroundSession $session;

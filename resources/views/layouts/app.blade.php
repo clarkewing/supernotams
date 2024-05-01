@@ -5,15 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>
-        @if(isset($title))
-            {{ $title }} –
-        @endif
-        {{ config('app.name', 'Laravel') }}
-    </title>
+    <title>{{ $pageTitle }}</title>
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app-wire.js'])
+    @livewireStyles
 </head>
 <body class="font-sans antialiased">
 <div class="h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
@@ -29,11 +25,12 @@
     @endif
 
     <!-- Page Content -->
-    <main {{ $attributes->class('flex-auto flex flex-col') }}>
+    <main {{ $attributes->class('flex-auto flex flex-col')->except('title') }}>
         {{ $slot }}
     </main>
 </div>
 
 @stack('scripts')
+@livewireScriptConfig
 </body>
 </html>

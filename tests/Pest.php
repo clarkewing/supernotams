@@ -65,7 +65,6 @@ expect()->extend('toFailWith', function (mixed $value, string $expectedMessage =
 
     expect($passed)->toBeFalse()
         ->and($message)->toContain($expectedMessage);
-
 });
 
 /*

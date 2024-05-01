@@ -7,9 +7,13 @@ use App\Actions\NotamFilter;
 use App\Actions\PDFCreator;
 use App\Contracts\NotamFetcher;
 use App\DTO\AtcFlightPlan;
+use App\DTO\AtsMessage;
+use App\Events\FetchingNotams;
 use App\Events\NotamProcessingEvent;
 use App\Events\NotamResultEvent;
 use App\Events\PdfResultEvent;
+use App\Events\ProcessingSuperBrief;
+use App\Models\Flight;
 use App\Models\Notam;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,14 +22,15 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Throwable;
 
-class NotamProcessingJob implements ShouldQueue
+class GenerateSuperBriefJob implements ShouldQueue
 {
     public int $timeout = 600;
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(protected string $flightPlan, protected string $channelName)
-    {
+    public function __construct(
+        protected Flight $flight,
+    ) {
     }
 
     public function handle(
@@ -34,6 +39,13 @@ class NotamProcessingJob implements ShouldQueue
         NotamFilter $notamFilter,
         PDFCreator $PDFCreator,
     ): void {
+        ProcessingSuperBrief::dispatch($this->flight);
+
+        $this->flight->fetchNotams();
+
+
+
+
         try {
             $this->sendMessage('Extracting all data out of the ATC flightplan');
 

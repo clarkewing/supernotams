@@ -2,7 +2,7 @@
 
 use App\Events\NotamProcessingEvent;
 use App\Events\PdfResultEvent;
-use App\Jobs\NotamProcessingJob;
+use App\Jobs\GenerateSuperBriefJob;
 use App\Models\Notam;
 use Illuminate\Support\Facades\Event;
 
@@ -55,7 +55,7 @@ it('can generate a proper notam briefing document', function () {
     Http::fakeSequence()->push(str($rawNotamJson->implode(','))->wrap('[', ']')->value());
 
     //Run the entire job/process
-    NotamProcessingJob::dispatchSync(plan_dub_lhr(), 'x10WI4RqH1t68qHIsLYzMteUVbogJX17foA5aNnR');
+    GenerateSuperBriefJob::dispatchSync(plan_dub_lhr(), 'x10WI4RqH1t68qHIsLYzMteUVbogJX17foA5aNnR');
 
     Event::assertDispatchedTimes(NotamProcessingEvent::class, 5);
     Event::assertDispatchedTimes(PdfResultEvent::class);
@@ -76,7 +76,7 @@ it('sends error messages to the user', function () {
     Event::fake();
     Log::shouldReceive('error')->once();
 
-    NotamProcessingJob::dispatchSync('BAD FLIGHTPLAN', 'x10WI4RqH1t68qHIsLYzMteUVbogJX17foA5aNnR');
+    GenerateSuperBriefJob::dispatchSync('BAD FLIGHTPLAN', 'x10WI4RqH1t68qHIsLYzMteUVbogJX17foA5aNnR');
 
     Event::assertNotDispatched(PdfResultEvent::class);
     Event::assertDispatched(function (NotamProcessingEvent $event) {

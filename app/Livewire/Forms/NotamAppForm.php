@@ -2,21 +2,23 @@
 
 namespace App\Livewire\Forms;
 
-use App\Rules\Ita2CharsetRule;
+use App\Rules\IcaoFplRule;
+use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class PlaygroundForm extends Form
+class NotamAppForm extends Form
 {
-    public string $notam = '';
+    #[Validate(as: 'flight plan message')]
+    public string $fpl = '';
 
     public function rules(): array
     {
         return [
-            'notam' => [
+            'fpl' => [
                 'required',
                 'string',
                 'min:5',
-                new Ita2CharsetRule,
+                new IcaoFplRule,
             ],
         ];
     }

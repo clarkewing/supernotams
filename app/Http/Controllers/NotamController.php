@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\NotamProcessingJob;
-use App\Rules\IsAtcFlightPlan;
+use App\DTO\AtsMessage;
+use App\Jobs\GenerateSuperBriefJob;
+use App\Models\Flight;
+use App\Rules\IcaoFplRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Response;
@@ -21,10 +23,14 @@ class NotamController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'flight_plan' => ['required', 'string', new IsAtcFlightPlan],
+            'flight_plan' => ['required', 'string', new IcaoFplRule],
         ]);
 
-        NotamProcessingJob::dispatch($validated['flight_plan'], Session::getId());
+        $flight = Flight::fromFpl(
+            AtsMessage::from($this->form->fpl)
+        );
+
+        GenerateSuperBriefJob::dispatch($flight, Session::getId());
         //        return redirect()->route('notam.index');
     }
 

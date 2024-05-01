@@ -5,12 +5,12 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class IsAtcFlightPlan implements ValidationRule
+class IcaoFplRule implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (! str_contains($value, 'DOF/') || ! str_contains($value, 'REG/')) {
-            $fail("Hey, it's not you, it's me...but I just don't think this is a valid ATC flight plan! - Would you mind trying some different text and have another go?");
+            $fail('The :attribute must be a valid ICAO flight plan.');
         }
     }
 }
